@@ -132,7 +132,6 @@ def preprocess(
         img = to_grayscale(img)
     if output_path:
         _imwrite_safe(output_path, img)
-    print(f"IMAGE: {img}")
     return img
 
 

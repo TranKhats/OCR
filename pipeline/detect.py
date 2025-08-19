@@ -213,7 +213,6 @@ def main():
 
     # —— gọi Step 1 nếu dùng được ocr_with_preprocessing, ngược lại dùng ảnh gốc
     if ocr_with_preprocessing is not None:
-        print(f"Gọi ocr_with_preprocessing với {args.image}")
         img_pp = ocr_with_preprocessing(
             args.image
         )
@@ -222,7 +221,7 @@ def main():
         # Lưu ảnh sau preprocess
         pp_path = os.path.join(args.outdir, f"pp_{os.path.basename(args.image)}")
         cv2.imwrite(pp_path, img_infer)
-        print(f"  • pp  : {pp_path}")
+        print(f"Kết thúc bước 1: Ảnh sau khi preprocessing được lưu ở {pp_path}")
         preprocess_used = True
     else:
         img_infer = img0
