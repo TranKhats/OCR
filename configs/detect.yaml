@@ -1,0 +1,35 @@
+outdir: runs/detect_easyocr
+langs: vi,en
+mode: word
+
+gpu: false
+
+text_thresh: 0.7
+low_text: 0.4
+link_thresh: 0.4
+mag_ratio: 1.5
+
+min_area: 80
+min_h: 10
+max_h: 1000
+min_ar: 0.1
+max_ar: 20.0
+nms: false
+iou_nms: 0.25
+
+pp_max_side: 1600
+pp_no_deskew: false
+pp_binarize: false
+pp_adaptive: false
+pp_auto: true
+
+# Optional per-image overrides (match by filename using shell-style patterns)
+# Example:
+# overrides:
+#   - pattern: "image0.jpg"
+#     pp_binarize: true
+#     pp_adaptive: true
+#     text_thresh: 0.6
+#     pp_remove_bg: true
+#   - pattern: "scanned_*.png"
+#     mode: line
