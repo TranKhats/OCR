@@ -1,6 +1,7 @@
 # pipeline/02_detect_easyocr.py
 import os, json, argparse
 from typing import Optional, Dict, Any
+from types import SimpleNamespace
 import fnmatch
 import cv2, easyocr, numpy as np
 from typing import List, Tuple
@@ -9,9 +10,8 @@ from typing import List, Tuple
 #—— GỌI STEP 1 (PREPROCESS) bằng ocr_with_preprocessing ——
 try:
     from pipeline.preprocess import ocr_with_preprocessing
-    print("Sử dụng ocr_with_preprocessing từ pipeline.image_preprocess.image_preprocessing")
-except Exception as e:
-    raise e
+    print("Sử dụng ocr_with_preprocessing")
+except Exception:
     print("Warning: Không import được ocr_with_preprocessing, sẽ dùng ảnh gốc.")
     ocr_with_preprocessing = None
 
@@ -173,62 +173,55 @@ def detect_easyocr(
     return boxes
 
 # -------------- CLI --------------
-def main():
-    ap = argparse.ArgumentParser("Step 2: EasyOCR Detect (auto call Step 1 preprocess)")
-    # Đọc cấu hình YAML trước để áp vào mặc định
+def detect(imgPath: str) -> Dict[str, Any]:
+    """
+    Detect wrapper với đúng 1 tham số imgPath. Các tham số khác lấy từ configs/detect.yaml.
+    Trả về dict gồm boxes và đường dẫn file output.
+    """
     cfg = _load_yaml_config()
-    _apply_config_defaults(ap, cfg)
-    ap.add_argument("image", help="Ảnh đầu vào (ảnh gốc)")
-    ap.add_argument("--langs", default="vi,en", help="Ngôn ngữ, ví dụ: vi,en")
-    ap.add_argument("--gpu", action="store_true")
-    ap.add_argument("--mode", choices=["word","line"], default="word",
-                    help="word: box theo từ; line: gộp theo dòng")
-    ap.add_argument("--outdir", default="runs/detect_easyocr")
 
+    # Build params from YAML
+    params = {
+        "langs": cfg.get("langs", "vi,en"),
+        "gpu": bool(cfg.get("gpu", False)),
+        "mode": cfg.get("mode", "word"),
+        "outdir": cfg.get("outdir", "runs/detect_easyocr"),
+        "text_thresh": float(cfg.get("text_thresh", 0.7)),
+        "low_text": float(cfg.get("low_text", 0.4)),
+        "link_thresh": float(cfg.get("link_thresh", 0.4)),
+        "mag_ratio": float(cfg.get("mag_ratio", 1.5)),
+        "min_area": int(cfg.get("min_area", 80)),
+        "min_h": int(cfg.get("min_h", 10)),
+        "max_h": int(cfg.get("max_h", 1000)),
+        "min_ar": float(cfg.get("min_ar", 0.1)),
+        "max_ar": float(cfg.get("max_ar", 20.0)),
+        "nms": bool(cfg.get("nms", False)),
+        "iou_nms": float(cfg.get("iou_nms", 0.25)),
+    }
 
-    # tham số tinh chỉnh EasyOCR detect
-    ap.add_argument("--text_thresh", type=float, default=0.7)
-    ap.add_argument("--low_text", type=float, default=0.4)
-    ap.add_argument("--link_thresh", type=float, default=0.4)
-    ap.add_argument("--mag_ratio", type=float, default=1.5)
-    ap.add_argument("--min_area", type=int, default=80)
-    ap.add_argument("--min_h", type=int, default=10)
-    ap.add_argument("--max_h", type=int, default=1000)
-    ap.add_argument("--min_ar", type=float, default=0.1)
-    ap.add_argument("--max_ar", type=float, default=20.0)
-    ap.add_argument("--nms", action="store_true")
-    ap.add_argument("--iou_nms", type=float, default=0.25)
+    args = SimpleNamespace(**params, image=imgPath)
+    args = _apply_image_overrides(cfg, imgPath, args)
 
-    # Không cần tham số preprocess — dùng ocr_with_preprocessing cố định
-
-    args = ap.parse_args()
-    # Áp dụng override theo tên ảnh (nếu có trong YAML)
-    args = _apply_image_overrides(cfg, args.image, args)
-
-    img0 = cv2.imread(args.image)
+    img0 = cv2.imread(imgPath)
     if img0 is None:
-        raise FileNotFoundError(args.image)
+        raise FileNotFoundError(imgPath)
 
     os.makedirs(args.outdir, exist_ok=True)
 
-    # —— gọi Step 1 nếu dùng được ocr_with_preprocessing, ngược lại dùng ảnh gốc
+    # Preprocess (optional)
     if ocr_with_preprocessing is not None:
-        img_pp = ocr_with_preprocessing(
-            args.image
-        )
-
+        img_pp = ocr_with_preprocessing(imgPath)
         img_infer = img_pp
-        # Lưu ảnh sau preprocess
-        pp_path = os.path.join(args.outdir, f"pp_{os.path.basename(args.image)}")
+        pp_path = os.path.join(args.outdir, f"pp_{os.path.basename(imgPath)}")
         cv2.imwrite(pp_path, img_infer)
-        print(f"Kết thúc bước 1: Ảnh sau khi preprocessing được lưu ở {pp_path}")
+        print(f"Kết thúc bước 1: Ảnh sau preprocessing: {pp_path}")
         preprocess_used = True
     else:
         img_infer = img0
+        pp_path = None
         preprocess_used = False
-    
 
-    langs = tuple(s.strip() for s in args.langs.split(",") if s.strip())
+    langs = tuple(s.strip() for s in str(args.langs).split(",") if s.strip())
 
     boxes = detect_easyocr(
         img_infer, langs=langs, gpu=args.gpu,
@@ -241,13 +234,13 @@ def main():
     )
 
     vis = draw_boxes(img0, boxes)
-    vis_path = os.path.join(args.outdir, os.path.basename(args.image))
+    vis_path = os.path.join(args.outdir, os.path.basename(imgPath))
     cv2.imwrite(vis_path, vis)
 
     js_path = vis_path.rsplit(".",1)[0] + ".json"
     with open(js_path, "w", encoding="utf-8") as f:
         json.dump({
-            "file": args.image,
+            "file": imgPath,
             "mode": args.mode,
             "preprocess_used": preprocess_used,
             "boxes": boxes
@@ -256,6 +249,22 @@ def main():
     print(f"[OK] {len(boxes)} boxes")
     print(f"  • vis : {vis_path}")
     print(f"  • json: {js_path}")
+    return {
+        "file": imgPath,
+        "mode": args.mode,
+        "preprocess_used": preprocess_used,
+        "boxes": boxes,
+        "vis_path": vis_path,
+        "pp_path": pp_path,
+        "outdir": args.outdir,
+    }
+
+def main():
+    ap = argparse.ArgumentParser("Detect wrapper")
+    ap.add_argument("imgPath", help="Đường dẫn ảnh đầu vào")
+    args = ap.parse_args()
+    detect(args.imgPath)
 
 if __name__ == "__main__":
     main()
+
