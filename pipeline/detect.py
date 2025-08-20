@@ -233,7 +233,7 @@ def detect(imgPath: str) -> Dict[str, Any]:
         mode=args.mode
     )
 
-    vis = draw_boxes(img0, boxes)
+    vis = draw_boxes(img_infer, boxes)
     vis_path = os.path.join(args.outdir, os.path.basename(imgPath))
     cv2.imwrite(vis_path, vis)
 

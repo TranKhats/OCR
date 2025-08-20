@@ -82,7 +82,11 @@ def binarize_otsu(image: np.ndarray) -> np.ndarray:
     Nhị phân hóa bằng Otsu. Trả về ảnh 1 kênh (uint8, {0,255}).
     """
     gray = to_grayscale(image)
-    _, bin_img = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    # Tính ngưỡng Otsu
+    otsu_thresh, _ = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    # Giảm ngưỡng Otsu một chút (ví dụ -10, có thể điều chỉnh tuỳ thực nghiệm)
+    new_thresh = max(0, otsu_thresh - 10)
+    _, bin_img = cv2.threshold(gray, new_thresh, 255, cv2.THRESH_BINARY)
     return bin_img
 
 
