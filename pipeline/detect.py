@@ -257,6 +257,7 @@ def detect(imgPath: str) -> Dict[str, Any]:
         "vis_path": vis_path,
         "pp_path": pp_path,
         "outdir": args.outdir,
+        "json_path": js_path
     }
 
 def main():

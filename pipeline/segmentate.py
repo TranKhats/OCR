@@ -2,6 +2,7 @@ import cv2, json
 import easyocr
 import numpy as np
 from pipeline.preprocess import ocr_with_preprocessing
+from pipeline.detect import detect
 
 # Load OCR model với tham số tốt hơn
 reader = easyocr.Reader(['vi', 'en'], gpu=False, 
@@ -9,17 +10,15 @@ reader = easyocr.Reader(['vi', 'en'], gpu=False,
                        download_enabled=True)
 
 # Load ảnh gốc
-imgPath = "data/02_detect/image0.jpg"
-img_pp_recognition_path = "runs/detect_easyocr/img_recog0.jpg"
-img = cv2.imread("runs/detect_easyocr/image0.jpg")
+imgPath = "data/02_detect/image.png"
 
-img_pp = ocr_with_preprocessing(imgPath, do_binarize=False)  # Sử dụng adaptive binarization
-cv2.imwrite(img_pp_recognition_path, img_pp)
-img = cv2.imread(img_pp_recognition_path)
-print(f"Đã lưu ảnh đã preprocess vào: {img_pp_recognition_path}")
-
+# img_pp = ocr_with_preprocessing(imgPath, do_binarize=False)  # Sử dụng adaptive binarization
+data = detect(imgPath)  # Sử dụng hàm detect để lấy ảnh đã preprocess
+image_preprocessed_path = data['pp_path']  # Lấy ảnh đã preprocess từ kết quả detect
+print(f"Đã lưu ảnh đã preprocess vào: {image_preprocessed_path}")
+img_pp = cv2.imread(image_preprocessed_path)
 # Load detect result
-with open("runs/detect_easyocr/image0.json", "r", encoding="utf-8") as f:
+with open(data['json_path'], "r", encoding="utf-8") as f:
     data = json.load(f)
 boxes = data["boxes"]
 
