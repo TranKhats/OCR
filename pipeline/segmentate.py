@@ -88,4 +88,5 @@ def main(image_path=None):
     all_text = recognize_text(lines, img_pp)
     save_result(all_text)
 
-main()
+if __name__ == "__main__":
+    main()
