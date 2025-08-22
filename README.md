@@ -103,9 +103,11 @@ python main.py --input anh_xau.jpg --scale --sharpen --auto-brightness --gamma 0
 
   - `none`: Không nhị phân hóa
   - `otsu`: Ngưỡng Otsu toàn cục (tốt cho ánh sáng đồng đều)
-  - `adaptive`: Ngưỡng thích ứng (tốt cho ánh sáng không đều) **[mặc định]**
+  - `adaptive`: Ngưỡng thích ứng Gaussian (tốt cho ánh sáng không đều) **[mặc định]**
+  - `mean_adaptive`: Ngưỡng thích ứng Mean (tốt cho ảnh nhiễu, xử lý nhanh)
   - `otsu_inv`: Otsu đảo ngược (chữ trắng nền đen)
-  - `adaptive_inv`: Adaptive đảo ngược
+  - `adaptive_inv`: Adaptive Gaussian đảo ngược
+  - `mean_adaptive_inv`: Adaptive Mean đảo ngược
 
 - `--morphology`: Phép biến đổi morphology để làm sạch
 
@@ -132,13 +134,19 @@ python main.py --input anh_xau.jpg --scale --sharpen --auto-brightness --gamma 0
 
 ### Các loại tài liệu
 
+**Ảnh chụp điện thoại hoặc có nhiều noise:**
+
+```bash
+python main.py --input anh_chup.jpg --scale --sharpen --crop --deskew --threshold mean_adaptive
+```
+
 **Scan chất lượng cao:**
 
 ```bash
 python main.py --input scan.pdf --threshold otsu
 ```
 
-**Ảnh chụp điện thoại:**
+**Ảnh chụp điện thoại (chất lượng thường):**
 
 ```bash
 python main.py --input anh_chup.jpg --scale --sharpen --crop --deskew --threshold adaptive
@@ -287,9 +295,18 @@ Danh sách đầy đủ: [EasyOCR Supported Languages](https://github.com/Jaided
 
 ### Chọn threshold
 
-- **`adaptive`**: Tốt nhất cho hầu hết tài liệu thực tế
-- **`otsu`**: Tốt cho scan sạch, ánh sáng đều
-- **`*_inv`**: Thử nếu threshold thường thất bại
+- **`adaptive`**: Tốt nhất cho hầu hết tài liệu thực tế, ánh sáng không đều, có shadow/gradient
+- **`mean_adaptive`**: Tốt cho ảnh nhiễu, contrast thấp, ảnh chụp điện thoại, xử lý nhanh hơn
+- **`otsu`**: Tốt cho scan sạch, ánh sáng đều, bimodal histogram rõ ràng
+- **`*_inv`**: Thử nếu threshold thường thất bại (chữ trắng trên nền đen)
+
+#### So sánh chi tiết các phương pháp threshold
+
+| Phương pháp           | Tốt cho                            | Ưu điểm                                      | Nhược điểm                    |
+| --------------------- | ---------------------------------- | -------------------------------------------- | ----------------------------- |
+| `adaptive` (Gaussian) | Scan documents, ánh sáng không đều | Xử lý tốt shadow/gradient, chất lượng cao    | Chậm hơn, kém với noise nhiều |
+| `mean_adaptive`       | Ảnh chụp điện thoại, ảnh nhiễu     | Nhanh, chống noise tốt, text khác kích thước | Kém với gradient phức tạp     |
+| `otsu`                | Scan chất lượng cao                | Rất nhanh, tự động tìm threshold tối ưu      | Chỉ tốt với ánh sáng đều      |
 
 ### Hiệu suất
 
@@ -298,6 +315,16 @@ Danh sách đầy đủ: [EasyOCR Supported Languages](https://github.com/Jaided
 - **Ngôn ngữ**: Chỉ định ngôn ngữ cần thiết để độ chính xác cao hơn
 
 ## Khắc phục sự cố
+
+**Khắc phục sự cố threshold:**
+
+1. **Kết quả OCR kém**: Thử các chế độ threshold khác theo thứ tự:
+   - `adaptive` → `mean_adaptive` → `otsu`
+   - Nếu vẫn kém, thử chế độ `*_inv`
+2. **Ảnh có nhiều noise**: Dùng `mean_adaptive` + `--morphology opening`
+3. **Ánh sáng không đều**: Dùng `adaptive` + `--auto-brightness`
+4. **Scan chất lượng cao**: Dùng `otsu` cho tốc độ tối ưu
+5. **Text mờ/nhạt**: Dùng `mean_adaptive` + `--sharpen`
 
 **Kết quả OCR kém:**
 
@@ -377,7 +404,7 @@ phương pháp động vượt tràn phẩy tính số hoá
 **Ví dụ lỗi tiếng Việt được sửa:**
 
 - `phưdng` → `phương`
-- `dộng` → `động`  
+- `dộng` → `động`
 - `vư_t` → `vượt`
 - `phấy` → `phẩy`
 - `8ố` → `số`

@@ -15,7 +15,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--out", default="out", help="Output folder")
     p.add_argument("--langs", nargs="+", default=["vi", "en"], help="Languages, e.g., vi en")
     p.add_argument("--threshold", default="adaptive", 
-                   choices=["none", "otsu", "adaptive", "otsu_inv", "adaptive_inv"],
+                   choices=["none", "otsu", "adaptive", "mean_adaptive", "otsu_inv", "adaptive_inv", "mean_adaptive_inv"],
                    help="Threshold mode")
     p.add_argument("--morphology", default="none",
                    choices=["none", "opening", "closing", "both"],

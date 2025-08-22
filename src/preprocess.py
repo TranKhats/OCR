@@ -171,7 +171,13 @@ def threshold(img: np.ndarray, mode: str = "adaptive") -> np.ndarray:
         _, th = cv2.threshold(img, 0, 255, thresh_type + cv2.THRESH_OTSU)
         return th
     
-    # adaptive (default)
+    elif base_mode == "mean_adaptive":
+        thresh_type = cv2.THRESH_BINARY_INV if invert else cv2.THRESH_BINARY
+        th = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
+                                   thresh_type, 35, 15)
+        return th
+    
+    # adaptive/gaussian_adaptive (default)
     thresh_type = cv2.THRESH_BINARY_INV if invert else cv2.THRESH_BINARY
     th = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                thresh_type, 35, 15)
