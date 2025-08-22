@@ -15,6 +15,22 @@ try:
 except ImportError:
     HAS_TEXT_UTILS = False
 
+def draw_boxes(image: np.ndarray, 
+               results: List[Tuple[np.ndarray, str, float]], 
+               color=(0,255,0), thickness=2) -> np.ndarray:
+    """
+    Vẽ bounding box lên ảnh (không vẽ text).
+    """
+    img = image.copy()
+    for box, _, _ in results:
+        pts = np.asarray(box, dtype=np.int32)
+        if pts.shape == (4,2):
+            cv2.polylines(img, [pts], isClosed=True, color=color, thickness=thickness)
+        elif pts.shape == (2,2):
+            x1, y1 = pts[0]
+            x2, y2 = pts[1]
+            cv2.rectangle(img, (int(x1), int(y1)), (int(x2), int(y2)), color, thickness)
+    return img
 
 def _reading_order_key(box: np.ndarray | list) -> Tuple[int, int]:
     # box: 4x2 points; compute top-left
@@ -124,11 +140,16 @@ def process_and_write(img_path: str, out_dir: str, langs: List[str], *,
         'morphology': morphology
     }
     
-    _, results = recognize_image(img_path, langs, reader=reader, gpu=gpu, **preprocess_kwargs)
+    pre, results = recognize_image(img_path, langs, reader=reader, gpu=gpu, **preprocess_kwargs)
     lines = results_to_lines(results, do_normalize, language, use_smart_correction)
     os.makedirs(out_dir, exist_ok=True)
     base = os.path.splitext(os.path.basename(img_path))[0]
     out_txt = os.path.join(out_dir, f"{base}.txt")
     with open(out_txt, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
+    # Vẽ bounding box và lưu ảnh
+    out_img = os.path.join(out_dir, f"{base}_boxes.jpg")
+    vis = draw_boxes(pre, results)
+    cv2.imwrite(out_img, vis)
+    print(f"Processed {img_path}, results saved to {out_txt} and {out_img}")
     return out_txt

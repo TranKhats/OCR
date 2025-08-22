@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+*.pkl
+*.pickle
+*.h5
+*.onnx
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# VSCode
+.vscode/
+.settings/
+
+# Virtual env
+venv/
+.venv/
+ENV/
+
+# Data & outputs
+data/
+outputs/
+runs/
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tif
+*.tiff
+*.webp
+*.pdf
+*.csv
+*.tsv
+*.json
+*.zip
+*.tar
+*.tar.gz
+*.pth
+*.pt
+*.ckpt
+*.weights
+
+# System
+Thumbs.db
+Desktop.ini
+
+# Git
+.git/
+.gitmodules
+
+# Others
+*.egg-info/
+*.egg
+*.out
+*.cache
+*.tensorboard
+
+# External
+external/Easy-Yolo-OCR/__pycache__/
+external/Easy-Yolo-OCR/*.pyc
+external/Easy-Yolo-OCR/*.pyo
