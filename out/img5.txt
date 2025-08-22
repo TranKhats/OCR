@@ -1,0 +1,25 @@
+Essential libraries and tools
+The code utilizes various external libraries to showcase 'design patterns in practical contexts Our aim
+is to help YOu review several of the design patterns within a specific use case. Heres breakdown of
+their roles:
+React: This popular UI library promotes patterns such as composition, component factories,
+and higher-order components. Well explain how to use TypeScript with React in Chapter 2
+Vitest: This is fast and feature-rich testing framework built specifically for TypeScript projects
+Itleverages the capabilities of Jest with additional functionalities such as built-in TypeScript
+support; improved test execution speed,and modern API
+building Nodejs web services with TypeScript, Express offers
+Express js: Perfect for minimal
+and stable framework, promoting modularity and performance You will learn more about how
+to use TypeScript in the server in Chapter 2.
+Immutablejs: This library is responsible for working with data structures involving immutability:
+Immutability is
+concept that we use quite frequently in functional programming, whereby
+we do not allow objects to be modified or altered once they have been created. We - will learn
+more about immutability in Chapter 7
+fp-ts: This library exposes functional prograrming abstractions such as Monads, Options,and
+Chapter
+Lens. Well dive deeper - into functional programming in
+RxJs: This library offers reactive programming concepts such as Observables through user -
+friendly API. Using Observables helps build scalable and resilient applications You will learn
+Chapter 8
+more about Observables in

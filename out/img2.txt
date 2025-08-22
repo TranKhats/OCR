@@ -1,0 +1,30 @@
+By using NoInfer<I> for the return type of getDefault, we prevent the compiler from
+inferring the type based on how getDefault ỉs used withín petanimal Ihis ensures
+that getDefaul must explicítly return type compatible wíth T, maintaining type safety
+for the overall functíon
+In the next section; we'll delve into the relationship between TypeScript and JavaScript.
+Understanding TypeScript and JavaScripts relationship
+Having established solid understanding of TypeScripts core concepts; yowre likely keen to learn
+how to migrate existing JavaScript code. This ís particularly valuable for those with strong JavaScript
+experience looking to transítion projects to TypeScript. T0 efectívely navigate thís process we need
+to grasp the fundamental differences between these languages.
+In the next section; well perform comparison of JavaScript and TypeScript, highlighting key
+distinctíons that will guide your mígration efforts.
+How does JavaScript compare to TypeScript?
+While both JavaScript and TypeScript share similar syntax key dífferences impact how you write
+and execute code Heres breakdown of some fundamental distinctions:
+Iyping typing: JavaScript is a dynamically typed language. Ihis means the type
+ofa varíable is determined at runtíme. TypeScript, on the other hand, ís statically typed You
+Jícitly define the types of variables and functions before execution_ leadíng to stricter tyPe -
+exP
+checking and fewer runtime errors.
+Implicit versus explicit types (with typeinference): In JavaScript, types are often implicit. For
+example, let implies that x ỉs number. TypeScript offers type inference, meaning
+it can often deduce the type based on the ínitial value assigned. So, let S in TypeScript
+also ínfers x as number. However, TypeScript allows you to explicitly override thís inference
+and assign diferent type when it is an equally allowed type
+directly
+Compilation verSUS interpretation: JavaScrípt code is typically interpreted by the
+brDwSEI Or server environnent TypeScript code goes through an additional compilation
+step that translates ít into JavaScript while enforcing type checks. This compilation step can
+potentially reveal errors before your code even runs.

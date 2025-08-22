@@ -1,0 +1,22 @@
+phẩy động* bởi vì hai phương pháp này ứng với sự lựa chọn
+đã chính xác khác nhau
+Đổi với tính toán dấu phẩy tính thì phép nhân luôn dẫn đến sai
+số làm tròn trong khi phép cộng thì không tạo ra sai số. Trong khi,
+tính toán với dấu phẩy động thì cả phép nhân lỄn phép công đều tao
+toán với dấu phẩy tính có thể
+thì hiện tượng vượt tràn khả năng này tính không xuất hiện với các
+phương pháp tính toán dấu phẩy động
+Kết luận
+Trong chương này, ta vừa trình bày = ngắn gọn thao tác số hoá các
+buông tự. Các thao tác này dược thực hiện bởi các bộ biến
+tín hiệu
+đãi ADC với giá khá rẻ. Tuy nhiên, lúc sử dụng bộ biến đổi ADC ta
+cần chú ý phải sử dụng một bậ lọc à đầu vào để giới hạn hiện tượng
+bĐ biến đổi ADC đắt tiền thì bậ lọc đầu vào này thường được thiết kế
+như mật bậ phận của thiết bị
+Trong khá nhiều áP dụng thuc tiễn, tín hiệu đầu vào cũng như
+thông
+tin hiệu đầu ra của hệ đen là tương tự, do đó ta phải biến đổi
+các tín hiệu số thành các tín hiệu tương tự Ihuo tác này được thực
+hiện bởi bậ biến đổi DAC Cấu trúc của bộ biến đãi này nói chung
+cùng khá đơn giản

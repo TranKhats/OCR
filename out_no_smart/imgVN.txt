@@ -1,0 +1,24 @@
+phẩy động* , bởi vì hai phưđng pháp này tương ứng vái sự lda chọn
+dộ chính xác khác nhau
+Đối với tính toán dấu phẩy tĩnh thì phép nhân luôn dẫn đến Bai
+6ố làm tròn trong khi phép cộng thì không tạo ra sai 8ố. Trong khi,
+tính toán với dấu phấy động thì cà phép nhân Lẫn phép cộng đều tậo
+ra các Bai 8ố loại này. Ngoài ra, tính toán vôi dấu phấy tĩnh có thế
+Làm náy sinh hiện tượng vượt tràn khà nẳng máy tính Ngược lgi
+thì hiện tuợng vượt tràn khả năng néy tính không xuất hiện vối các
+phương pháp tính toán dấu phấy động'
+Kết luận
+2.6
+Trong chưong này; ta vùa trinh bày ngắn gọn thao tác số hóa các
+tín hiệu tương tự Các thao tác này đuạc thực hiện bởi câc bộ biến
+dổi ADC với giá khá ré, Tuy nhiên, lúc Bứ dụng bộ biến đổi ADC ta
+cẩn chú ý phái sử dụng một bộ lpc @ đầu vào đế giói hạn hiện tưạng
+gẬp phẩ. Bộ lpc này thuờng được gọi là bộ lọc đẩu vàot, Đối vđi các
+bậ biến đổi ADC dắt tiền thì bộ loc đẩu 'vào này thuờng dược thìết kế
+nhu một bộ phận cua thiết bị.
+Trong khá nhiều ép dụng thực tiễn, tín hiệu đẩu vào cúng như
+thống
+tin hiệu đẩụ ra cua hệ đều là tưđng tự, do đó ta phàí bìến đổi
+các tín hiệụ 8ổ thànb các tín hiệu tượng t#. Thao tác này được thực
+hiện bởí bộ biến đổi DACCấu trúc cúa bộ biến đối này nói chung
+cũng khá đđn giản.

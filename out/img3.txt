@@ -1,0 +1,36 @@
+Getting Started with TypeSoipt $
+Sometimes, YOu want to start using TypeScript right away and not wait for complete re-factor: The
+following compiler setting allows you to adopt TypeScript incrementally:
+Leveraging existing JavaScript code
+While we recommend progressively converting JavaScript files to TypeScript; the allowJB compiler
+flag ' ofters an optional approach: This flag allows you to import regular JavaScript files je) directly
+into your TypeScript project = without compiler ErTOrs:
+import isObject from {utilities je" Notice the extengion
+In this example; the code imports the BObject function from the utilities.jg file (notice
+the j8 extension) This allows you t0 utilize existing JavaScript code within your TypeScript project,
+with simple line change
+Note
+While allowJs provides flexibility, it bypasses type-checking for imported JavaScript code
+converting these JavaScript
+This can potentially introduce type-related errors later: Consider
+files to TypeScript for more robust and type-safe code base in the lon} TWL
+Addressing external libraries
+When importing from libraries such as Lodash or RxJS, TypeScript might prompt you to download
+type definitions These definitions provide type information for the library functions and objects
+Typically; the - compiler wil suggest the appropriate installation command For example; to install
+Lodash types, You would use the following:
+inatall Bave @tyxpaaf lodabh
+pm
+Installing these type definitions enables type checking for the imported libraries, enhancing your
+codes overall type safety:
+Following compiler guidance
+In some cases; the- compiler might offer suggestions Or error messages that ! further investigation:
+Carefully review these messages and leverage online resources or the TypeScript documentation located
+httpe ; typeecriptlang org/_ docB handbook/compiler-optione html
+to understand how the different options change the behavior ofthe compiler:
+Leveraging linting tools
+Consider using tools such as TSLint or ESLint with TypeScript extensions to identify potential type
+tainability: In the
+related issues and enforce coding conventions, improving code quality and maine
+Further reading section of this chapter; we provide link to the official ESLint TypeScript website that
+offers instrctions on how to enable that in you project:

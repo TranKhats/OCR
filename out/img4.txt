@@ -1,0 +1,36 @@
+Understanding TypeScript and JavaScript's relationship
+By following these típs and addressing external library types, You can streamlíne Your JavaScript to
+IypeScript mígration and establish more robust and type-safe code base.
+Design patterns in JavaScript
+JavaScript and TypeScript, TypeScrípt offers
+While you can implement design Patterns in both
+significant advantages  of clarity; maintainability; and type safety:
+1n terns
+JavaScrípts dynamíc nature makes it less suitable for complex design Patterns. Concepts such as
+interfaces are absent, forcíng reliance on duck typing; property checks; and runtime assertions.
+For example, whíle using intertaces as parameters; we can change the implementation logic at runtime
+without changing the functíon signature This is how the Strategy design pattern WOIKS , as will be
+explained ín Chapter 5.
+For example, lets look at duck typing versus structural typing. Consíder function that logs - messages
+and sends emails:
+triggerNotification js
+function tri ggerNotification ema lclient logger}
+(logger txpeof logger_ 1cg function"
+logger.log Sending email
+{emailclient typeof emailclient
+Bend function'
+emailclient send Sent"
+'Message
+having
+Ihe preceding example leverages duck typíng  With duck typing; the functíon relies on objects
+specific
+propertíes at runtime. Ihis can lead to errors due to incorrect object shapes or argument
+order. So, long as the log and send properties exist in those objects and they are functíons; this
+following
+operation will succeed_ Ihere are many ways that this can go wrong though Look at the
+call to this functíon:
+triggerNotification ({
+1og: console 1og "Logger call"
+send (is9} console 1o9 {insg)
+When you call the function this way nothíng happens. Thís is because the order of the parameters
+has changed (swapped) and 10g Or aend are not available as properties
